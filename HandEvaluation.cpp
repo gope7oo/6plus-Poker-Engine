@@ -19,13 +19,13 @@ bool HandEvaluation::isFlush(const std::vector<Card>& cards) {
         if (entry.second >= 5) {
             return true;
         }
-        return false;
     }
+    return false;
 }
 
 // check if cards form a straight 
 bool HandEvaluation::isStraight(const std::vector<Card>& cards) {
-    if (cards.size()) return false;
+    if (cards.size() < 5) return false;
 
     std::set<int> ranks;
 
@@ -112,7 +112,7 @@ HandRanks HandEvaluation::evaluateHand(const std::vector<Card>& hand, const std:
     bool flush = isFlush(allCards);
     bool straight = isStraight(allCards);
 
-    if (isFlush && isStraight) return HandRanks::StraightFlush; 
+    if (flush && straight) return HandRanks::StraightFlush; 
     if(isFourOfAKind(rankCount)) return HandRanks::FourOfAKind; 
     if (flush) return HandRanks::Flush;
     if (isFullHouse(rankCount)) return HandRanks::FullHouse;
