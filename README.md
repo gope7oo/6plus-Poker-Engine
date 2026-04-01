@@ -57,20 +57,13 @@ Poker Engine
 - Deck  
   Manages the short deck (36 cards), including shuffling and dealing
 
-- Player  
-  Stores player state, hand, and actions
-
 - HandEvaluator  
-  Evaluates and ranks poker hands with tie-breaking logic
+  Evaluates and ranks poker hands based on hand strength
 
 - Game Engine  
   Controls overall game flow, betting rounds, and determines the winner
 
 ---
-
-## Hand Evaluation
-
-The HandEvaluator assigns a rank to each hand and resolves ties using kicker logic.
 
 ### Example ranking (Short Deck):
 
@@ -142,6 +135,7 @@ Run:
 
 ## Future Improvements
 
+- Add kicker logic
 - Smarter AI using Monte Carlo simulations
 - Advanced betting strategies
 - Multiplayer support (multiple players at the table)
