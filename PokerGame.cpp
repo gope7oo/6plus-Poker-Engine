@@ -113,23 +113,83 @@ void PokerGame::dealRiver() {
     cout << "River: " << board.back().toString() << endl;
 }
 
-// Simplified betting logic (cleaned for structure)
-bool PokerGame::bettingRound(const string& stage) {
+
+bool PokerGame::bettingRound(const string& stage)
+{
     cout << "\n--- " << stage << " Betting Round ---\n";
     cout << "Pot: $" << pot << " | Your Money: $" << playerMoney << endl;
 
     string action;
-    cout << "Choose action (check/fold): ";
+
+    cout << "Choose action (check / bet / fold): ";
     cin >> action;
 
-    if (action == "fold") {
+    // Fold
+    if (action == "fold")
+    {
         cout << "You folded. Computer wins the pot.\n";
+
         computerMoney += pot;
+
         return false;
     }
 
-    cout << "You checked.\n";
-    return true;
+    // Check
+    else if (action == "check")
+    {
+        cout << "You checked.\n";
+
+        return true;
+    }
+
+    // Bet
+    else if (action == "bet")
+    {
+        int amount;
+
+        cout << "Enter bet amount: $";
+        cin >> amount;
+
+        // Invalid amount
+        if (amount <= 0)
+        {
+            cout << "Invalid bet amount.\n";
+
+            return bettingRound(stage);
+        }
+
+        // Not enough chips
+        if (amount > playerMoney)
+        {
+            cout << "You do not have enough money.\n";
+
+            return bettingRound(stage);
+        }
+
+        // Apply bet
+        playerMoney -= amount;
+        pot += amount;
+
+        cout << "You bet $" << amount << ".\n";
+
+        // Simple computer call logic
+        cout << "Computer calls.\n";
+
+        computerMoney -= amount;
+        pot += amount;
+
+        cout << "Pot is now $" << pot << ".\n";
+
+        return true;
+    }
+
+    // Invalid input
+    else
+    {
+        cout << "Invalid action.\n";
+
+        return bettingRound(stage);
+    }
 }
 
 // Basic AI decision (can be improved later)
