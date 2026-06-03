@@ -1,0 +1,19 @@
+# IDE files
+.vscode/
+
+# Build outputs
+*.exe
+*.o
+*.obj
+build/
+cmake-build-*/
+
+# Logs
+*.log
+run.txt
+
+# Windows junk
+nul
+
+# Optional (if you compile locally often)
+*.out
