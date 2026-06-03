@@ -78,9 +78,11 @@ void PokerGame::playRound() {
 
     if (playerRank > dealerRank) {
         cout << "You win $" << pot << "!\n"; 
+        playerMoney += pot;
     }
     else if (playerRank < dealerRank) {
         cout << "Computer wins $" << pot << "!\n";
+        computerMoney += pot;
     }
     else {
         cout << "Tie! Pot Split. \n";
@@ -113,7 +115,7 @@ void PokerGame::dealRiver() {
     cout << "River: " << board.back().toString() << endl;
 }
 
-
+// Simplified betting logic (cleaned for structure)
 bool PokerGame::bettingRound(const string& stage)
 {
     cout << "\n--- " << stage << " Betting Round ---\n";

@@ -58,6 +58,27 @@ static std::map<int, int> countRanks(const std::vector<Card>& cards) {
     return rankCount;
 }
 
+bool HandEvaluation::isStraightFlush(const std::vector<Card>& cards)
+{
+    std::map<Suit, std::vector<Card>> suitedCards;
+
+    for (const auto& card : cards)
+    {
+        suitedCards[card.suit].push_back(card);
+    }
+
+    for (const auto& suitGroup : suitedCards)
+    {
+        if (suitGroup.second.size() >= 5)
+        {
+            if (isStraight(suitGroup.second))
+                return true;
+        }
+    }
+
+    return false;
+}
+
 bool HandEvaluation::isFourOfAKind(const std::map<int, int>& rankCount) {
     for (const auto& entry : rankCount) {
         if (entry.second == 4) {
@@ -67,16 +88,21 @@ bool HandEvaluation::isFourOfAKind(const std::map<int, int>& rankCount) {
     return false;
 }
 
-bool HandEvaluation::isFullHouse(const std::map<int, int>& rankCount) {
-    bool hasThree = false;
-    bool hasTwo = false;
+bool HandEvaluation::isFullHouse(const std::map<int, int>& rankCount)
+{
+    int trips = 0;
+    int pairs = 0;
 
-    for (const auto& entry : rankCount) {
-        if (entry.second == 3) hasThree = true;
-        if (entry.second == 2) hasTwo = true;
+    for (const auto& entry : rankCount)
+    {
+        if (entry.second >= 3)
+            trips++;
+
+        else if (entry.second >= 2)
+            pairs++;
     }
 
-    return hasThree && hasTwo;
+    return trips >= 2 || (trips >= 1 && pairs >= 1);
 }
 
 bool HandEvaluation::isThreeOfAKind(const std::map<int, int>& rankCount) {
@@ -112,18 +138,23 @@ HandRanks HandEvaluation::evaluateHand(const std::vector<Card>& hand, const std:
     bool flush = isFlush(allCards);
     bool straight = isStraight(allCards);
 
-    if (flush && straight) return HandRanks::StraightFlush; 
+    
+    if (isStraightFlush(allCards))
+        return HandRanks::StraightFlush;
     if(isFourOfAKind(rankCount)) return HandRanks::FourOfAKind; 
     if (flush) return HandRanks::Flush;
     if (isFullHouse(rankCount)) return HandRanks::FullHouse;
 
     if (straight) return HandRanks::Straight;
 
-    if (isThreeOfAKind) return HandRanks::ThreeOfAKind;
+    if (isThreeOfAKind(rankCount))
+        return HandRanks::ThreeOfAKind;
 
-    if (isTwoPair) return HandRanks::TwoPair;
+    if (isTwoPair(rankCount))
+        return HandRanks::TwoPair;
 
-    if (isPair) return HandRanks::Pair;
+    if (isPair(rankCount))
+        return HandRanks::Pair;
 
     return HandRanks::HighCard;
 

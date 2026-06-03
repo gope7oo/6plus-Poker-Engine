@@ -27,6 +27,7 @@ public:
     static HandRanks evaluateHand(const std::vector<Card>& hand, const std::vector<Card>& board);
 
 private:
+    static bool isStraightFlush(const std::vector<Card>& cards);
     static bool isFlush(const std::vector<Card>& cards);
     static bool isStraight(const std::vector<Card>& cards);
     static bool isFourOfAKind(const std::map<int, int>& rankCount);
